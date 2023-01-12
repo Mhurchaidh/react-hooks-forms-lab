@@ -5,23 +5,47 @@ import Item from "./Item";
 
 function ShoppingList({ items }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [itemArray, setItemArray] = useState(items);
 
-  function handleCategoryChange(event) {
-    setSelectedCategory(event.target.value);
+  function handleChangeCategory(category) {
+    setSelectedCategory(category);
   }
 
-  const itemsToDisplay = items.filter((item) => {
-    if (selectedCategory === "All") return true;
+  function handleChangeQuery(search) {
+    setSearchQuery(search);
+  }
 
-    return item.category === selectedCategory;
-  });
+  function handleSubmit(item) {
+    setItemArray([...itemArray, item]);
+  }
+
+  function handleSearch(search) {
+      //setItemArray(search)
+      console.log(search);
+  }
+  // const itemsByCategory = itemArray.filter((item) => {
+  //   if (selectedCategory === "All") return true;
+
+  //   return item.category === selectedCategory;
+  // });
+
+  // const filteredItems = itemsByCategory.filter(item => {
+  //   if(searchQuery === "") return true;
+
+  //   return item.name.toLowerCase().includes(searchQuery.toLowerCase())})
+    
 
   return (
     <div className="ShoppingList">
-      <ItemForm />
-      <Filter onCategoryChange={handleCategoryChange} />
+      <ItemForm onItemFormSubmit={handleSubmit}/>
+      <Filter itemArray={itemArray} handleSearch={handleSearch}/*handleQueryChange={handleChangeQuery} handleChangeCategory={handleChangeCategory}*/
+            /*onCategoryChange={handleChangeCategory} 
+              onSearchChange={handleQueryChange} 
+              searchQuery={searchQuery}
+              selectedCategory={selectedCategory}*//>
       <ul className="Items">
-        {itemsToDisplay.map((item) => (
+        {itemArray.map((item) => (
           <Item key={item.id} name={item.name} category={item.category} />
         ))}
       </ul>
